@@ -1,0 +1,9 @@
+<library path="lib/libcampero_ur_ip_controllers">
+
+	<class name="campero_ur_ip_controllers/CartesianVelocityControl" type="campero_ur_ip_controllers::CartesianVelocityControl" base_class_type="controller_interface::ControllerBase">
+		<description>
+		  Info...
+		</description>
+	</class> 
+	
+</library>
