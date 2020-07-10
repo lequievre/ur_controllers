@@ -5,5 +5,11 @@
 		  Info...
 		</description>
 	</class> 
+
+    <class name="campero_ur_ip_controllers/VelBasedCartesianVelocityController" type="campero_ur_ip_controllers::VelBasedCartesianVelocityController" base_class_type="controller_interface::ControllerBase">
+		<description>
+		  Info...
+		</description>
+	</class>
 	
 </library>

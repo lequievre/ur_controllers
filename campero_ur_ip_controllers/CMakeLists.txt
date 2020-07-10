@@ -152,6 +152,7 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
    src/cartesian_velocity_control.cpp
+   src/vel_based_cartesian_velocity_controller.cpp
 )
 
 ## Add cmake target dependencies of the library
