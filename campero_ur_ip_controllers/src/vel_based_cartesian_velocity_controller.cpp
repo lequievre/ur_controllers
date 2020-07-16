@@ -16,7 +16,7 @@
 #include <pluginlib/class_list_macros.h>
 
 
-namespace mrod_ur_ip_controllers 
+namespace campero_ur_ip_controllers 
 {
     VelBasedCartesianVelocityController::VelBasedCartesianVelocityController() {}
     VelBasedCartesianVelocityController::~VelBasedCartesianVelocityController() {}
@@ -173,4 +173,4 @@ namespace mrod_ur_ip_controllers
     
 }
 
-PLUGINLIB_EXPORT_CLASS(mrod_ur_ip_controllers::VelBasedCartesianVelocityController, controller_interface::ControllerBase)
+PLUGINLIB_EXPORT_CLASS(campero_ur_ip_controllers::VelBasedCartesianVelocityController, controller_interface::ControllerBase)

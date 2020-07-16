@@ -40,7 +40,7 @@
 #include <geometry_msgs/Twist.h>
 
 
-namespace mrod_ur_ip_controllers
+namespace campero_ur_ip_controllers
 {
 	class VelBasedCartesianVelocityController: 
 	public controller_interface::KinematicChainControllerBase<hardware_interface::VelocityJointInterface>
