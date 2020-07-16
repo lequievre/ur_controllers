@@ -141,7 +141,7 @@ namespace mrod_ur_ip_controllers
         
         #if TRACE_ACTIVATED // prints (define TRACE_ACTIVATED as 0 to suppress)
 			current_time_ = ros::Time::now();
-			ros::Duration elapsed_time = current_time_ - last_time;
+			ros::Duration elapsed_time = current_time_ - last_time_;
 			if (elapsed_time.toSec() >= 1.0)
 			{
 				for (int i = 0; i < joint_handles_.size(); i++)
