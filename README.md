@@ -20,7 +20,14 @@ It uses KDL solvers (notably inverse kinematics solver) in order to turn this de
 The controller subscribes to this topic to get the desired value of cartesian position and orientation specified by the user
 Type: PoseRPY
 
+Position and Orientation :
 rostopic pub -1 /campero/arm/cartesian_velocity_control/command  campero_ur_ip_controllers/PoseRPY '{id: 0, position: {x: 0.5, y: 0.5, z: 0.8}, orientation: {roll: 1.8, pitch: -0.3, yaw: 1.3}}'
+
+Position only :
+rostopic pub -1 /campero/arm/cartesian_velocity_control/command  campero_ur_ip_controllers/PoseRPY '{id: 1, position: {x: 0.27, y: 0.48, z: 0.88}}'
+
+Orientation only :
+rostopic pub -1 /campero/arm/cartesian_velocity_control/command  campero_ur_ip_controllers/PoseRPY '{id: 2, orientation: {roll: 0.2, pitch: 0.0, yaw: 0.0}}'
 
 ### current_x
 The controller publishes on this topic to get the current pose of the end-effector
