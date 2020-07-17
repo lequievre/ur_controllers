@@ -7,11 +7,7 @@ This controller uses the *PositionJointInterface* of UR robots that is part of *
 This controller uses the tools of *ROS Control*: http://wiki.ros.org/ros_control
 This controller uses the tools of *KDL*: http://wiki.ros.org/kdl
 
-This controller was originally forked from CentroEPiaggio/kuka-lwr.
-   <author>Manuel Bonilla</author>
-   <maintainer email="cjrosales@gmail.com">Carlos J. Rosales</maintainer>
-   <maintainer email="marco.esposito@tum.de">Marco Esposito</maintainer>
-   <license>BSD</license>
+This controller was originally forked from CentroEPiaggio/kuka-lwr (Manuel Bonilla, Carlos J. Rosales, Marco Esposito), license BSD.
 
 ## Description
 
