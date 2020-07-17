@@ -28,6 +28,8 @@
 #include <kdl/chainiksolvervel_pinv.hpp>
 #include <kdl/chainiksolverpos_nr_jl.hpp>
 
+#include <kdl_conversions/kdl_msg.h>
+
 // Boost
 #include <boost/scoped_ptr.hpp>
 
@@ -36,9 +38,11 @@
 
 // Ros messages generated
 #include <campero_ur_ip_controllers/PoseRPY.h>
+#include <geometry_msgs/Pose.h>
 
 // realtime tools
 #include <realtime_tools/realtime_buffer.h>
+#include <realtime_tools/realtime_publisher.h>
 
 #define NB_PRINTED_ON_TARGET_MAX 1
 
@@ -73,6 +77,8 @@ namespace campero_ur_ip_controllers
 
 			Eigen::MatrixXd J_pinv_;  // Jacobian inversed
 			Eigen::Matrix<double,3,3> skew_;
+
+			std::shared_ptr<realtime_tools::RealtimePublisher<geometry_msgs::Pose> > realtime_x_pub_; // real time publisher to publish current cartesian position and orientation
 
 			struct quaternion_
 			{

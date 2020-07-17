@@ -23,6 +23,7 @@
 // For plugin
 #include <pluginlib/class_list_macros.h>
 
+
 namespace campero_ur_ip_controllers 
 {
     CartesianVelocityControl::CartesianVelocityControl() {}
@@ -58,6 +59,9 @@ namespace campero_ur_ip_controllers
 
 		// Defining command topic
         sub_command_ = nh_.subscribe("command", 1, &CartesianVelocityControl::command, this);
+
+		// current cartesian publisher
+		realtime_x_pub_.reset(new realtime_tools::RealtimePublisher<geometry_msgs::Pose>(n, "current_x", 4));
         
         ROS_INFO("***** FINISH CartesianVelocityControl::init ************");
 
@@ -220,7 +224,12 @@ namespace campero_ur_ip_controllers
            {
              joint_handles_[i].setCommand(joint_des_states_.q(i));
            }
-            
+
+			// publish estimated cartesian pose
+			if (realtime_x_pub_->trylock()){
+				tf::poseKDLToMsg(x_,realtime_x_pub_->msg_);
+			 	realtime_x_pub_->unlockAndPublish();
+			}
         }
 
 	//ROS_INFO("***** CartesianVelocityControl::update end ************");
