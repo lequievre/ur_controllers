@@ -1,6 +1,34 @@
 # ur_controllers
 This repository contains controlers using ros_control architecture for an Universal Robot arm
 
+# Position based cartesian velocity controller
+
+This controller uses the *PositionJointInterface* of UR robots that is part of *Universal_Robots_ROS_Driver*: https://github.com/UniversalRobots/Universal_Robots_ROS_Driver
+This controller uses the tools of *ROS Control*: http://wiki.ros.org/ros_control
+This controller uses the tools of *KDL*: http://wiki.ros.org/kdl
+
+This controller was originally forked from CentroEPiaggio/kuka-lwr.
+ *  <author>Manuel Bonilla</author>
+ *  <maintainer email="cjrosales@gmail.com">Carlos J. Rosales</maintainer>
+ *  <maintainer email="marco.esposito@tum.de">Marco Esposito</maintainer>
+ *  <license>BSD</license>
+
+## Description
+
+The controller implements a cartesian position control. The input is a desired position (translation and orientation) value to be published on topic "command".
+It uses KDL solvers (notably inverse kinematics solver) in order to turn this desired position into a target joint position sent to the interface.
+
+## Topics
+
+### command
+The controller subscribes to this topic to get the desired value of cartesian position and orientation specified by the user
+Type: PoseRPY
+
+rostopic pub -1 /campero/arm/cartesian_velocity_control/command  campero_ur_ip_controllers/PoseRPY '{id: 0, position: {x: 0.5, y: 0.5, z: 0.8}, orientation: {roll: 1.8, pitch: -0.3, yaw: 1.3}}'
+
+### current_x
+The controller publishes on this topic to get the current pose of the end-effector
+Type: geometry_msgs::Pose (with realtime_tools)
 
 # Velocity based cartesian velocity controller
 
