@@ -109,6 +109,9 @@ namespace campero_ur_ip_controllers
         {
             joint_msr_states_.q(i) = joint_handles_[i].getPosition();
         }
+        
+        // Computing forward kinematics
+        fk_pos_solver_->JntToCart(joint_msr_states_.q, x_);
 
 		#if TRACE_ACTIVATED
 		
@@ -155,9 +158,6 @@ namespace campero_ur_ip_controllers
 
             // Computing J_pinv_ (Jacobian pseudo inverse)
             pseudo_inverse(J_.data, J_pinv_);
-
-            // Computing forward kinematics
-            fk_pos_solver_->JntToCart(joint_msr_states_.q, x_);
 
 			// Reset position and orientation error
 			SetToZero(x_err_);
@@ -225,14 +225,15 @@ namespace campero_ur_ip_controllers
              joint_handles_[i].setCommand(joint_des_states_.q(i));
            }
 
-			// publish estimated cartesian pose
-			if (realtime_x_pub_->trylock()){
-				tf::poseKDLToMsg(x_,realtime_x_pub_->msg_);
-			 	realtime_x_pub_->unlockAndPublish();
-			}
         }
+        
+        // publish estimated cartesian pose
+		if (realtime_x_pub_->trylock()){
+			tf::poseKDLToMsg(x_,realtime_x_pub_->msg_);
+			 realtime_x_pub_->unlockAndPublish();
+		}
 
-	//ROS_INFO("***** CartesianVelocityControl::update end ************");
+	    //ROS_INFO("***** CartesianVelocityControl::update end ************");
     }
 
     void CartesianVelocityControl::command(const campero_ur_ip_controllers::PoseRPY::ConstPtr &msg)
