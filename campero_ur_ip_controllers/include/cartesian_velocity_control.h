@@ -44,7 +44,16 @@
 #include <realtime_tools/realtime_buffer.h>
 #include <realtime_tools/realtime_publisher.h>
 
+// C++
+#include <sstream>
+
 #define NB_PRINTED_ON_TARGET_MAX 1
+
+#define PUBLISH_MARKERS 1
+
+#if PUBLISH_MARKERS
+ #include <visualization_msgs/MarkerArray.h>
+#endif
 
 namespace campero_ur_ip_controllers
 {
@@ -99,6 +108,14 @@ namespace campero_ur_ip_controllers
 			
 			ros::Time  last_time_, current_time_; // time for debug
 			ros::Time  last_time_error_rot_, current_time_error_rot_; // time for debug
+			
+			#if PUBLISH_MARKERS
+			 std::shared_ptr<realtime_tools::RealtimePublisher<visualization_msgs::MarkerArray> > realtime_marker_x_pub_; // real time publisher to publish a marker array containing the current cartesian position and orientation
+
+		     void publish_marker_x_(KDL::Frame x, int id);  // function that publish a marker array message
+		     int msg_id_;		// id of a marker into the message
+		     
+		    #endif
 	};
 }
 

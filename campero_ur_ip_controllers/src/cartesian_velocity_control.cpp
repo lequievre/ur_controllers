@@ -49,19 +49,16 @@ namespace campero_ur_ip_controllers
 		// Resizing Jacobian matrix
         J_.resize(kdl_chain_.getNrOfJoints());
 
-        // Getting current joint positions
-        for(int i=0; i < joint_handles_.size(); i++)
-        {
-            joint_msr_states_.q(i) = joint_handles_[i].getPosition();
-            joint_msr_states_.qdot(i) = joint_handles_[i].getVelocity();
-            joint_des_states_.q(i) = joint_msr_states_.q(i);
-        }
-
 		// Defining command topic
         sub_command_ = nh_.subscribe("command", 1, &CartesianVelocityControl::command, this);
 
 		// current cartesian publisher
 		realtime_x_pub_.reset(new realtime_tools::RealtimePublisher<geometry_msgs::Pose>(n, "current_x", 4));
+		
+		#if PUBLISH_MARKERS
+		 // current cartesian position into a marker publisher, can be added in RVIZ	
+		 realtime_marker_x_pub_.reset(new realtime_tools::RealtimePublisher<visualization_msgs::MarkerArray>(n, "marker_x", 4));
+		#endif
         
         ROS_INFO("***** FINISH CartesianVelocityControl::init ************");
 
@@ -75,6 +72,14 @@ namespace campero_ur_ip_controllers
 		// Initialising the current time (for debug)
 		last_time_ = ros::Time::now();
 		last_time_error_rot_ = ros::Time::now();
+		
+		// Getting current joint positions
+        for(int i=0; i < joint_handles_.size(); i++)
+        {
+            joint_msr_states_.q(i) = joint_handles_[i].getPosition();
+            joint_msr_states_.qdot(i) = joint_handles_[i].getVelocity();
+            joint_des_states_.q(i) = joint_msr_states_.q(i);
+        }
 
 		// Computing current cartesian position by using the forward kinematic solver
         fk_pos_solver_->JntToCart(joint_msr_states_.q, x_);
@@ -87,6 +92,11 @@ namespace campero_ur_ip_controllers
 
 		// Setting on target to 0 to specify that the effector is not on desired target
         on_target_ = 0;
+        
+        #if PUBLISH_MARKERS
+         msg_id_ = 0; // Set the default value of a marker array message id to 0.
+         realtime_marker_x_pub_->msg_.markers.resize(1); // The array of the message array contain only one marker.
+        #endif
     }
 
 	void CartesianVelocityControl::stopping(const ros::Time& time)
@@ -112,6 +122,7 @@ namespace campero_ur_ip_controllers
         
         // Computing forward kinematics
         fk_pos_solver_->JntToCart(joint_msr_states_.q, x_);
+        
 
 		#if TRACE_ACTIVATED
 		
@@ -227,6 +238,11 @@ namespace campero_ur_ip_controllers
 
         }
         
+        #if PUBLISH_MARKERS
+         // setting marker parameters
+		 publish_marker_x_(x_, msg_id_);
+		#endif
+        
         // publish estimated cartesian pose
 		if (realtime_x_pub_->trylock()){
 			tf::poseKDLToMsg(x_,realtime_x_pub_->msg_);
@@ -283,10 +299,52 @@ namespace campero_ur_ip_controllers
 
         cmd_flag_ = 1;
 		on_target_ = 0;
+		
+		#if PUBLISH_MARKERS
+		 msg_id_ = 0;
+		#endif
         
         ROS_INFO("***** FINISH CartesianVelocityControl::command ************");
     }
+    
+   #if PUBLISH_MARKERS
+    void CartesianVelocityControl::publish_marker_x_(KDL::Frame x, int id)
+	{		
+		if (realtime_marker_x_pub_->trylock()){
+			    
+			    int index = 0;
+			    msg_id_++;
+			    
+			    double quat_x,quat_y,quat_z,quat_w;
+				x.M.GetQuaternion(quat_x,quat_y,quat_z,quat_w);
 
+				realtime_marker_x_pub_->msg_.markers[index].header.frame_id = "campero_ur10_base_link";
+				realtime_marker_x_pub_->msg_.markers[index].header.stamp = ros::Time();
+				realtime_marker_x_pub_->msg_.markers[index].ns = "end_effector";
+				realtime_marker_x_pub_->msg_.markers[index].id = id;
+				realtime_marker_x_pub_->msg_.markers[index].type = visualization_msgs::Marker::SPHERE;
+				realtime_marker_x_pub_->msg_.markers[index].action = visualization_msgs::Marker::ADD;
+				realtime_marker_x_pub_->msg_.markers[index].pose.position.x = x.p.x();
+				realtime_marker_x_pub_->msg_.markers[index].pose.position.y = x.p.y();
+				realtime_marker_x_pub_->msg_.markers[index].pose.position.z = x.p.z();
+				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.x = quat_x;
+				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.y = quat_y;
+				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.z = quat_z;
+				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.w = quat_w;
+				realtime_marker_x_pub_->msg_.markers[index].scale.x = 0.01;
+				realtime_marker_x_pub_->msg_.markers[index].scale.y = 0.01;
+				realtime_marker_x_pub_->msg_.markers[index].scale.z = 0.01;
+				realtime_marker_x_pub_->msg_.markers[index].color.a = 1.0;
+				realtime_marker_x_pub_->msg_.markers[index].color.r = 0.0;
+				realtime_marker_x_pub_->msg_.markers[index].color.g = 1.0;
+				realtime_marker_x_pub_->msg_.markers[index].color.b = 0.0;
+				
+				
+				realtime_marker_x_pub_->unlockAndPublish();
+			}
+			
+	}
+  #endif
 }
 
 PLUGINLIB_EXPORT_CLASS(campero_ur_ip_controllers::CartesianVelocityControl, controller_interface::ControllerBase)
