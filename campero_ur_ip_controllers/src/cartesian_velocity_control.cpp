@@ -315,8 +315,6 @@ namespace campero_ur_ip_controllers
 			    int index = 0;
 			    msg_id_++;
 			    
-			    double quat_x,quat_y,quat_z,quat_w;
-				x.M.GetQuaternion(quat_x,quat_y,quat_z,quat_w);
 
 				realtime_marker_x_pub_->msg_.markers[index].header.frame_id = "campero_ur10_base_link";
 				realtime_marker_x_pub_->msg_.markers[index].header.stamp = ros::Time();
@@ -327,10 +325,13 @@ namespace campero_ur_ip_controllers
 				realtime_marker_x_pub_->msg_.markers[index].pose.position.x = x.p.x();
 				realtime_marker_x_pub_->msg_.markers[index].pose.position.y = x.p.y();
 				realtime_marker_x_pub_->msg_.markers[index].pose.position.z = x.p.z();
-				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.x = quat_x;
-				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.y = quat_y;
-				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.z = quat_z;
-				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.w = quat_w;
+				
+				x.M.GetQuaternion(
+				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.x,
+				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.y,
+				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.z,
+				realtime_marker_x_pub_->msg_.markers[index].pose.orientation.w);
+				
 				realtime_marker_x_pub_->msg_.markers[index].scale.x = 0.01;
 				realtime_marker_x_pub_->msg_.markers[index].scale.y = 0.01;
 				realtime_marker_x_pub_->msg_.markers[index].scale.z = 0.01;
