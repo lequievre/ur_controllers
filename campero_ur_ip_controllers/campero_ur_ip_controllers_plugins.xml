@@ -12,4 +12,10 @@
 		</description>
 	</class>
 	
+	<class name="campero_ur_ip_controllers/JointArrayControl" type="campero_ur_ip_controllers::JointArrayControl" base_class_type="controller_interface::ControllerBase">
+		<description>
+		  Info...
+		</description>
+	</class>
+	
 </library>
