@@ -50,12 +50,12 @@ It uses KDL solvers (notably inverse kinematics solver) in order to turn this de
 The controller subscribes to this topic to get the desired value of cartesian velocity specified by the user
 Type: geometry_msgs::Twist
 
-rostopic pub -1 /campero/arm/vel_based_cartesian_velocity_control/cmd_vel geometry_msgs/Twist -- '[0.0, 0.01, 0.0]' '[0.0, 0.0, 0.0]'
+rostopic pub -1 /campero/arm/vel_based_cartesian_velocity_control/command geometry_msgs/Twist -- '[0.0, 0.01, 0.0]' '[0.0, 0.0, 0.0]'
 
-### x_master
+### current_x
 The controller publishes on this topic to get the current pose of the end-effector
 Type: geometry_msgs::Pose (with realtime_tools)
 
-### x_dot_master
+### current_x_dot
 The controller publishes on this topic to get the current twist of the end-effector
 Type: geometry_msgs::Twist (with realtime_tools)
