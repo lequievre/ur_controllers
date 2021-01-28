@@ -2,6 +2,7 @@
 This repository contains controllers using ros_control architecture for an Universal Robot arm.
 
 Adrien KOESSLER, Laurent LEQUIEVRE
+
 Institut Pascal, Université Clermont Auvergne, CNRS, SIGMA Clermont
 
 adrien.koessler(at)sigma-clermont.fr, laurent lequievre(at)uca.fr
@@ -51,7 +52,7 @@ It uses KDL solvers (notably inverse kinematics solver) in order to turn this de
 
 ## Topics
 
-### cmd_vel
+### command
 The controller subscribes to this topic to get the desired value of cartesian velocity specified by the user
 Type: geometry_msgs::Twist
 
