@@ -46,11 +46,11 @@ namespace campero_ur_ip_controllers
         }
         
         // subscriber to desired cartesian velocity topic
-        sub_command_ = nh_.subscribe("cmd_vel", 1, &VelBasedCartesianVelocityController::command, this);
+        sub_command_ = nh_.subscribe("command", 1, &VelBasedCartesianVelocityController::command, this);
         
         // publishers for current cartesian pose and velocity
-        realtime_x_dot_pub_.reset(new realtime_tools::RealtimePublisher<geometry_msgs::Twist>(n, "x_dot_master", 4));
-        realtime_x_pub_.reset(new realtime_tools::RealtimePublisher<geometry_msgs::Pose>(n, "x_master", 4));
+        realtime_x_dot_pub_.reset(new realtime_tools::RealtimePublisher<geometry_msgs::Twist>(n, "current_x_dot", 4));
+        realtime_x_pub_.reset(new realtime_tools::RealtimePublisher<geometry_msgs::Pose>(n, "current_x", 4));
         
         ROS_INFO("***** FINISH VelBasedCartesianVelocityController::init ************");
 
@@ -161,7 +161,7 @@ namespace campero_ur_ip_controllers
 		
 		// convert topic type (geometry_msgs::Twist) to type used in update method (KDL::Twist)
         KDL::Twist x_dot_des_;
-        tf::TwistMsgToKDL(*msg, x_dot_des_);
+        tf::twistMsgToKDL(*msg, x_dot_des_);
      
         // Using realtime buffer (writing Non RT)
 		x_dot_des_buffer_.writeFromNonRT(x_dot_des_);
