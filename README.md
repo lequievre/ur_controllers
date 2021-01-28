@@ -1,5 +1,10 @@
 # ur_controllers
-This repository contains controlers using ros_control architecture for an Universal Robot arm
+This repository contains controllers using ros_control architecture for an Universal Robot arm.
+
+Adrien KOESSLER, Laurent LEQUIEVRE
+Institut Pascal, Université Clermont Auvergne, CNRS, SIGMA Clermont
+
+adrien.koessler(at)sigma-clermont.fr, laurent lequievre(at)uca.fr
 
 # Position based cartesian velocity controller
 
