@@ -173,8 +173,8 @@ namespace controller_interface
 		#endif
 		
 		// Parsing joint limits from urdf model along kdl chain
-		boost::shared_ptr<const urdf::Link> link_ = model.getLink(tip_name);	// A Link defined in a URDF structure
-		boost::shared_ptr<const urdf::Joint> joint_;  // A Joint defined in a URDF structure
+		urdf::LinkConstSharedPtr link_ = model.getLink(tip_name);	// A Link defined in a URDF structure
+		urdf::JointConstSharedPtr joint_;  // A Joint defined in a URDF structure
 		
 		// Resize joints limits arrays with the "KDL chain" number of joints
 		joint_limits_.min.resize(kdl_chain_.getNrOfJoints());
